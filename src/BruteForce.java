@@ -3,7 +3,8 @@ import java.util.Arrays;
 public class BruteForce {
 
 	private int stringLength;
-	private final char[] alphabetMinuscule = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z' };
+	//private final char[] alphabetMinuscule = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z' };
+	private final char[] alphabetMinuscule = {'a','b'};
 	private final char[] alphabetMajuscule = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 	private final char [] chiffres = {'0','1','2','3','4','5','6','7','8','9'};
 	private double nbCombi = 0;
@@ -36,6 +37,7 @@ public class BruteForce {
 	    run();
 	}
 
+	
 	private void  run() {
 		try {
 			long start = System.nanoTime();
@@ -90,23 +92,25 @@ public class BruteForce {
 	}
 	private void RunAux(char[] s,int i,int lettre) throws InterruptedException {		
 		if(i==0){
-			//Thread.sleep(10);
 			for (int j = 0; j < lettres.length; j++) {
 				s[s.length-1] = lettres[j];
 				nbCombi++;
-				//print(s);
+				print(s);
 			}
 		}
-		else {	
-			char[] s2 = s;
-			RunAux(s2,i-1,lettre);			
-			if(lettre < lettres.length-1) {
+		else {
+			if(lettre == lettres.length-1) {
+				RunAux(s,i-1,lettre);
+			}	
+			else {
+				char[] s2 = s;
+				RunAux(s2,i-1,lettre);			
 				s2[s.length-i-1] = lettres[lettre+1];
 				RunAux(s2,i,lettre+1);
 			}	
-			
-		}	
+		}				
 	}
+	
 	private void print(char [] s) {
 		for (int i = 0; i < s.length; i++) {
 			System.out.print((char) chars[i]);
@@ -114,10 +118,11 @@ public class BruteForce {
 		System.out.println();
 	}
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws InterruptedException {
-		System.out.println("Cas 1 : 6 lettres, alphabet min"); BruteForce cas1= new BruteForce("min", 6);
+		System.out.println("Cas 1 : 6 lettres, alphabet min"); BruteForce cas1= new BruteForce("min", 3);
 		
-		System.out.println("Cas 2 : 6 lettres, alphabet min et maj"); BruteForce cas2= new BruteForce("min-maj", 6);
+		/*System.out.println("Cas 2 : 6 lettres, alphabet min et maj"); BruteForce cas2= new BruteForce("min-maj", 6);
 		
 		System.out.println("Cas 3 : 6 lettres, alphabet min et maj et chiffres"); BruteForce cas3= new BruteForce("min-maj-chiffre", 6);
 		
@@ -128,6 +133,10 @@ public class BruteForce {
 		System.out.println("Cas 6 : 7 lettres, alphabet min et maj et chiffres"); BruteForce cas6= new BruteForce("min-maj-chiffre", 7);
 		
 		System.out.println("Cas 7 : 8 lettres, alphabet min"); BruteForce cas7= new BruteForce("min", 8);
+		
+		System.out.println("Cas 8 : 8 lettres, alphabet min et maj et chiffres"); BruteForce cas8= new BruteForce("min-maj-chiffre", 8);
+		*/
+		
 	}
 
 }
