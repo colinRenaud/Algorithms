@@ -53,12 +53,12 @@ T* binarySearchSeqRecAux(T* seq, size_t begin, size_t end , const T& element) {
 }
 
 template <typename T>
-void runSearch(T*(*searchlachoute)(T*,T*,const T&),T* begin,T*end ,const T& element,std::string searchType) {
+void runSearch(T*(*searchSeqF)(T*,T*,const T&),T* begin,T*end ,const T& element,std::string searchType) {
     clock_t tbegin,tend,telapsed;
     std::cout << "Begin search" << std::endl;
 
     tbegin = clock();
-    T* contains = (*searchlachoute)(begin,end,element);
+    T* contains = (*searchSeqF)(begin,end,element);
     tend = clock();
 
     std::string str = contains ? "yes":"no";
