@@ -99,14 +99,16 @@ void merge(int* array,size_t begin,size_t middle,size_t end) {
 
     size_t left = begin;
     size_t right = middle+1;
-    std::copy(array+begin,array+middle+1,copy);
+    std::copy(array+begin,array+middle+1,copy);  // copy old values
+    size_t copyIndex = 0;
 
     for(size_t i=begin;i<=end;i++) {
         if (left==middle+1)
             break;
-        else if (right == (end+1) || copy[left-begin]<array[right] ) {
-            array[i]=copy[left-begin];
+        else if (right == (end+1) || copy[copyIndex]<array[right] ) {
+            array[i]=copy[copyIndex];
             left++;
+            copyIndex++;
         }
         else  // (copy[left-begin]>=array[right])
             array[i]=array[right++];
