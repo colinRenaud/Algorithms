@@ -94,26 +94,27 @@ int partition(int* array, size_t left,size_t right) { // return index as T is sp
 }
 
 void merge(int* array,size_t begin,size_t middle,size_t end) {
-       size_t arraySize = (end-begin)+1;
-    int *copy = new int[(arraySize/2)+1];
+    
+    size_t arraySize = (end-begin)+1;
+    int *copy = new int[arraySize];
 
     size_t left = begin;
-    size_t right = middle+1;
-    std::copy(array+begin,array+middle+1,copy);  // copy old values
-    size_t copyIndex = 0;
+    size_t  right = middle+1;
 
-    for(size_t i=begin;i<=end;i++) {
-        if (left==middle+1)
-            break;
-        else if (right == (end+1) || copy[copyIndex]<array[right] ) {
-            array[i]=copy[copyIndex];
-            left++;
-            copyIndex++;
+    for(size_t i=0 ; i<arraySize ; i++) {
+
+        if(right == end+1 || array[left] <= array[right]) { // if right == end+1 the comparasion between right and left part is impossible
+            // but element of left array > element of array[right] but there are not writed yet
+            copy[i] = array[left];
+            ++left;
         }
-        else  // (copy[left-begin]>=array[right])
-            array[i]=array[right++];
+        else if(left == middle+1 ||  array[left] > array[right]){
+            copy[i] = array[right];
+            ++right;
+        }
     }
-    delete [] copy;
+    std::copy(copy,copy+arraySize,array+begin);
+    delete[] copy;
 }
 
 void mergeSortAux(int* array,size_t begin,size_t end)
