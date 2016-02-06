@@ -94,8 +94,8 @@ int partition(int* array, size_t left,size_t right) { // return index as T is sp
 }
 
 void merge(int* array,size_t begin,size_t middle,size_t end) {
-    size_t arraySize = (end-begin)+1;
-    int *copy = new int[arraySize];
+       size_t arraySize = (end-begin)+1;
+    int *copy = new int[(arraySize/2)+1];
 
     size_t left = begin;
     size_t right = middle+1;
