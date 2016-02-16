@@ -11,43 +11,57 @@ using namespace std;
 int compare (const void * a, const void * b);
 void stdSort(int * array, size_t size);
 void stdQsort(int* array,size_t size);
+
 void quickSort(int * array, size_t size);
 void quickSortAux(int *array,size_t left,size_t right);
-int partition(int* array, size_t left,size_t right);
+size_t partition(int* array, size_t left,size_t right);
+
 void mergeSort(int* array,size_t size);
 void mergeSortAux(int* array,size_t begin, size_t end);
 void merge(int* array, size_t begin,size_t middle, size_t end);
 
+void smoothSort(int* array, size_t size);
+void selectionSort(int* array,size_t size);
+
+
 void generateTab(int* array, size_t size, int max);
-bool isSorted(int* array,size_t size);
 void runSort(void(*pf)(int*,size_t),int* array,size_t size,string type);
 void printArray(int* array, size_t size);
 
 int main(int argc, char ** argv) {//args : 1:size 2: element 3:max element
 
-    if(argc == 3) {
-        size_t size = atoi(argv[1]);
-        int max = atoi(argv[2]);
-        int* array = new int[size];
-        int* save = new int[size];
-
-        generateTab(save,size,max);
-        std::copy(save,save+size,array);
-        cout << "Array of size " << size  << " generated "<< endl << endl;
-
-        runSort(&stdSort,array,size,"std");
-        std::copy(save,save+size,array);
-        runSort(&stdQsort,array,size,"std Quick");
-        std::copy(save,save+size,array);
-        runSort(&quickSort,array,size,"Quick");
-        std::copy(save,save+size,array);
-        runSort(&mergeSort,array,size,"Merge");
-        return 0;
+    if(argc != 3) {
+        cout << "Error missing argument"; std::terminate();
     }
-    else {
-        cout << "Error missing argument" ;
-        return 1;
-    }
+    size_t size = atoi(argv[1]);
+    int max = atoi(argv[2]);
+    int* array = new int[size];
+
+
+    //int array[6] = {8,17,1,9,3,2};
+    int* save = new int[size];
+    generateTab(save,size,max);
+    cout << "Array of size " << size  << " generated "<< endl << endl;
+
+    std::copy(array,array+size,save);
+    runSort(&stdSort,array,size,"std");
+
+    std::copy(save,save+size,array);
+    runSort(&stdQsort,array,size,"std Quick");
+
+    std::copy(save,save+size,array);
+    runSort(&quickSort,array,size,"Quick");
+
+    std::copy(save,save+size,array);
+    runSort(&mergeSort,array,size,"Merge");
+
+    /*std::copy(save,save+size,array);
+    runSort(&smoothSort,array,size,"Smoort");
+
+    std::copy(save,save+size,array);
+    runSort(&selectionSort,array,size,"Selection");*/
+
+    return 0;
 }
 
 void stdSort(int * array, size_t size) {
@@ -74,18 +88,16 @@ void quickSortAux(int *array,size_t left,size_t right) {
         quickSortAux(array,pivot,right);
 }
 
-int partition(int* array, size_t left,size_t right) { // return index as T is splited into T[0..i] and T[i+1,size-1]
+size_t partition(int* array, size_t left,size_t right) { // return index as T is splited into T[0..i] and T[i+1,size-1]
     size_t i = left, j = right;
-    int pivot = array[(i+j)/2], tmp = 0;
+    int pivot = array[(i+j)/2];
     while(i <= j) {
         while(array[i] < pivot)
             i++;
-        while(array[j]>pivot)
+        while(array[j] > pivot)
             j--;
         if(i <= j) {
-            tmp = array[i];
-            array[i] = array[j];
-            array[j] = tmp;
+            std::swap(array[i],array[j]);
             i++;
             j--;
         }
@@ -94,12 +106,12 @@ int partition(int* array, size_t left,size_t right) { // return index as T is sp
 }
 
 void merge(int* array,size_t begin,size_t middle,size_t end) {
-    
+
     size_t arraySize = (end-begin)+1;
     int *copy = new int[arraySize];
 
     size_t left = begin;
-    size_t  right = middle+1;
+    size_t right = middle+1;
 
     for(size_t i=0 ; i<arraySize ; i++) {
 
@@ -117,8 +129,7 @@ void merge(int* array,size_t begin,size_t middle,size_t end) {
     delete[] copy;
 }
 
-void mergeSortAux(int* array,size_t begin,size_t end)
-{
+void mergeSortAux(int* array,size_t begin,size_t end) {
     if (begin !=  end) {
         size_t middle=(end+begin)/2;
         mergeSortAux(array,begin,middle);
@@ -141,7 +152,24 @@ void introSort(int* array, size_t size) {
 }
 
 void smoothSort(int* array, size_t size) {
+    for (size_t i = 0; i < size ; ++i) {
+        for(size_t j = size -1 ; j > i ; j--) {
+            if(array[j] < array[j-1])
+                std::swap(array[j],array[j-1]);
+        }
+    }
+}
 
+void selectionSort(int* array,size_t size) {
+    for (size_t i = 0; i < size ; ++i) {
+        size_t minIndex = i;
+        for (size_t j = i+1; j < size; ++j) {
+            if(array[j] < array[minIndex])
+                minIndex = j;
+        }
+        if( i != minIndex)
+            std::swap(array[i],array[minIndex]);
+    }
 }
 
 void tournamentSort(int* array, size_t  size) {
@@ -153,40 +181,28 @@ void timSort(int* array, size_t size) {
 }
 
 void generateTab(int* array,size_t size,int max) {
-    if(size > 0) {
+    if(size) {
         for (size_t i = 0; i < size; ++i)
             array[i] = rand() % max;
     }
 }
 
-bool isSorted(int* array,size_t size) {
-    if(size == 0 || size == 1)
-        return true;
-    size_t i = 0;
-    while(i<size-1) {
-        if (array[i] > array[i + 1])
-            return false;
-        ++i;
-    }
-    return true;
-}
 void runSort(void(*pf)(int*,size_t),int* array,size_t size,string type) {
     clock_t tbegin,tend,telapsed;
     cout << "Begin " << type <<  "sort" << endl;
-    
+
     tbegin = clock();
     (*pf)(array,size);
     tend = clock();
 
     telapsed = (tbegin - tend)/(CLOCKS_PER_SEC/1E3);
-    string sorted = isSorted(array,size) ? "yes":"no";
+    string sorted = std::is_sorted(array,array+size) ? "yes":"no";
     cout << "Array is sorted ? " << sorted << endl;
     cout << "Ellapsed time with "<< type <<" Sort " << telapsed  <<" ms "<< endl << endl;
 }
 
 void printArray(int* array, size_t size) {
-    for(size_t i=0 ; i< size ; i++) {
+    for(size_t i=0 ; i< size ; i++)
         std::cout << array[i] << " " ;
-    }
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl ;
 }
