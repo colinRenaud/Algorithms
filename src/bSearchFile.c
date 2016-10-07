@@ -5,8 +5,6 @@
 
 void bSearchFile(const char* path, const char c);
 
-void generate_text(char* fileName,size_t size);
-
 int main(int argc, char** argv) {
     if(argc != 3) {
         fprintf(stderr,"Error bad argument number"); exit(1);
