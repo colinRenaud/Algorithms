@@ -2,3 +2,4 @@
 Some simple algorithms implémentation
 - Searchs algorithms in  in C++ (monothread)
 - Sorts algorithm  in C++ (monothread)
+- Binary search into file in C ( monothread)
