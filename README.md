@@ -1,5 +1,5 @@
 # Algorithms
 Some simple algorithms implémentation
-- Searchs algorithms in  in C++ (monothread)
-- Sorts algorithm  in C++ (monothread)
-- Binary search into file in C ( monothread)
+- Searchs algorithms in  in C++ 
+- Sorts algorithm  in C++ 
+- Binary search into file in C
